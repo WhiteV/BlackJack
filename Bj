@@ -1,0 +1,117 @@
+import random
+##Глобальные переменные
+Cards=['2','3','4','5','6','7','8','9','10','J','L','K','A']
+Hand=[]
+Croup=[]
+##Класс сохраниния результатов игры
+class Save():      
+    def History():
+        pointG=Game.__Summ__(Hand)
+        pointC=Game.__Summ__(Croup)
+        save=open('History.txt', 'a')
+        save.write('Карты крупье: '+str(Croup)+' Баллы крупье '+str(pointC)+'\n')
+        save.write('Карты игрока: '+str(Hand)+' Ваши баллы '+str(pointG)+'\n')
+        if (pointG>pointC and pointG<=21):
+            save.write('______________________Вы_победили_______________________________\n')
+        elif(pointG<pointC and pointC>21 and pointG<=21):
+            save.write('______________________Вы_победили_______________________________\n')
+        elif (pointG==pointC and pointG<=21):
+            save.write('______________________Ничья_____________________________________\n')
+        else:
+            save.write('______________________Вы_проиграли______________________________\n')
+        save.close()
+
+class Game():
+    #Подсчет очков
+    def __Summ__(mass):
+        summ=0
+        i=0
+        while(i<len(mass)):
+            try:
+                summ+=int(mass[i])
+            except:
+                if (mass[i]=='A'):
+                    summ+=1
+                else:
+                    summ+=10
+            i+=1
+        return(summ)
+    ##
+    def table():
+        #Start
+        Hand.append(random.choice(Cards))
+        Croup.append(random.choice(Cards))
+        print('Карты крупье: ', Croup)
+        print('Карты игрока: ', Hand, 'Ваши балы: ', Game.__Summ__(Hand))
+        quest=(input('Нужны ли вам еще карты? (y-да, n-нет) '))
+        while(quest!='y' and quest!='n'):
+            quest=(input('Были введены некорректные данные. Нужны ли вам еще карты? (y-да, n-нет) '))
+        while(quest=='y'):
+            Hand.append(random.choice(Cards))
+            if(Game.__Summ__(Croup)<17):
+                Croup.append(random.choice(Cards))
+            print('Карты крупье: ', Croup)
+            print('Карты игрока: ', Hand, 'Ваши балы: ', Game.__Summ__(Hand))
+            quest=(input('Нужны ли вам еще карты? (y-да, n-нет) '))
+            while(quest!='y' and quest!='n'):
+                quest=(input('Были введены некорректные данные. Нужны ли вам еще карты? (y-да, n-нет) '))           
+        if(quest=='n' and Game.__Summ__(Croup)<17):
+            while(Game.__Summ__(Croup)<17):
+                Croup.append(random.choice(Cards))
+    ## Победа/Поражение
+    def gameover():
+        pointC=Game.__Summ__(Croup)
+        pointG=Game.__Summ__(Hand)
+        print('Баллы крупье: ', Game.__Summ__(Croup))
+        print('Ваши баллы',Game.__Summ__(Hand))
+        if (pointG>pointC and pointG<=21):
+            print('______________________Вы_победили______________________________')
+        elif(pointG<pointC and pointC>21 and pointG<=21):
+            print('______________________Вы_победили______________________________')
+        elif (pointG==pointC and pointG<=21):
+            print('______________________Ничья_____________________________________')
+        else:
+            print('______________________Вы_проиграли______________________________')
+            
+
+
+#_________________main_____________________#
+Game.table()
+Save.History()
+Game.gameover()
+
+quest=input('Хотите поиграть еще?(y-да, n-нет) ')
+while (quest!='y' and quest!='n'):
+    quest=input('Хотите поиграть еще?(y-да, n-нет) ')
+while(quest=='y'):
+    Hand.clear()
+    Croup.clear()
+    Game.table()
+
+    Save.History()
+    Game.gameover()
+    quest=input('Хотите поиграть еще?(y-да, n-нет) ')
+    while (quest!='y' and quest!='n'):
+        quest=input('Хотите поиграть еще?(y-да, n-нет) ')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
